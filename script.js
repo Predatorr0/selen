@@ -524,9 +524,10 @@ function handleYesVictory(e) {
   atmosphere = 'climax';
   vignette.style.background = 'radial-gradient(circle at center, rgba(244, 63, 94, 0.25) 30%, rgba(20, 5, 15, 0.88) 100%)';
 
-  // Crossfade to Fey - Media Naranja (Sped Up Nightcore) AT PEAK 38.0s!
-  trackNameLabel.textContent = 'Media Naranja - Fey (Sped Up Nightcore)';
-  playSong(audioMedia, 38.0);
+  // Keep HIM - Heaven Tonight playing smoothly with romantic fireworks!
+  if (audioHeaven) {
+    audioHeaven.volume = 1.0;
+  }
 
   // Explosive Fireworks Celebration
   for (let i = 0; i < 7; i++) {
