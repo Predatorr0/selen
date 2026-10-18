@@ -524,10 +524,9 @@ function handleYesVictory(e) {
   atmosphere = 'climax';
   vignette.style.background = 'radial-gradient(circle at center, rgba(244, 63, 94, 0.25) 30%, rgba(20, 5, 15, 0.88) 100%)';
 
-  // Keep HIM - Heaven Tonight playing smoothly with romantic fireworks!
-  if (audioHeaven) {
-    audioHeaven.volume = 1.0;
-  }
+  // Play Media Naranja at 38s peak drop! (No text on screen, just the pure song playing)
+  trackNameLabel.textContent = 'Media Naranja - Fey';
+  playSong(audioMedia, 38.0);
 
   // Explosive Fireworks Celebration
   for (let i = 0; i < 7; i++) {
