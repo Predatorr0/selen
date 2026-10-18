@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Selen İçin... ❤️</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍂</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Fullscreen Canvas for Atmospheric Rain, Leaves, Hearts & Fireflies -->
+  <canvas id="bg-canvas"></canvas>
+  <div id="vignette-overlay"></div>
+
+  <!-- Music Status Mini HUD -->
+  <div id="audio-hud" class="hidden">
+    <div class="audio-disc">🎵</div>
+    <span id="current-track-name">Travis - Happy To Hang Around</span>
+  </div>
+
+  <!-- Stage 0: Initial Romantic Invitation (Required for Auto-Play Policy) -->
+  <div id="intro-modal" class="screen-stage active">
+    <div class="glass-card romantic-card">
+      <div class="heart-pulse-icon">🍂</div>
+      <h2 class="intro-title">Selen için...</h2>
+      <p class="intro-desc">
+        Sana söylemek istediğim birkaç cümle var.<br>
+        Lütfen kulaklığını tak ve sadece bir kez dokun.
+      </p>
+      <button id="btn-start" class="btn-romantic">
+        <span>Seni Dinliyorum 🕊️</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Interactive Story Stages Container -->
+  <main id="main-container" class="hidden">
+
+    <!-- Stage 1: Seni Kırdığımı Biliyorum -->
+    <div id="stage-1" class="stage-view active">
+      <div class="content-box">
+        <span class="whisper-tag">Seni dinlemek istiyorum...</span>
+        <h1 class="hero-quote clickable-quote" id="quote-1">
+          Seni kırdığımı biliyorum
+        </h1>
+        <div class="interactive-hint">
+          <span class="hint-arrow">↓</span>
+          <span>Bana dokun</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 2: Özür Dilerim -->
+    <div id="stage-2" class="stage-view">
+      <div class="content-box">
+        <span class="whisper-tag">Tüm kalbimle...</span>
+        <h1 class="hero-quote clickable-quote sad-mode" id="quote-2">
+          Özür dilerim... 🥺💔
+        </h1>
+        <p class="sub-letter">
+          Seni üzmek, o güzel gözlerindeki ışıltıyı bir an olsun soldurmak<br>
+          bu dünyada isteyeceğim en son şey bile değildi...
+        </p>
+        <div class="interactive-hint">
+          <span class="hint-arrow">↓</span>
+          <span>Lütfen dokun</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 3: Seni Seviyorum -->
+    <div id="stage-3" class="stage-view">
+      <div class="content-box">
+        <span class="whisper-tag glow-tag">Bütün kalbim seninle...</span>
+        <h1 class="hero-quote romantic-glow" id="quote-3">
+          Seni çok seviyorum Selen 🕊️✨
+        </h1>
+        <p class="sub-letter romantic-letter">
+          Sen benim bu hayattaki en huzurlu limanım, en güzel sığınağımsın.
+        </p>
+
+        <!-- Question Section -->
+        <div class="question-container" id="question-box">
+          <h2 class="question-title">Beni affedebilir misin?</h2>
+          <div class="btn-group">
+            <button id="btn-yes" class="choice-btn yes-btn">
+              <span>Evet ❤️</span>
+            </button>
+            <button id="btn-no" class="choice-btn no-btn">
+              <span>Hayır 💔</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 4: Grand Climax (Evet Bastığında) -->
+    <div id="stage-4" class="stage-view">
+      <div class="content-box climax-box">
+        <div class="climax-stars">✨ 💖 ✨</div>
+        <h1 class="climax-main-title">
+          Seni her halinle seviyorum Selen ❤️
+        </h1>
+        <div class="love-letter-parchment">
+          <p>
+            Gülüşünle, kızışınla, triplerinle, sessizliğinle, çocuksu yanınla...<br>
+            Ben senin kalbini kırmak için değil, ömrüm yettikçe o kalbi pamuklara sarmak için varım.
+          </p>
+          <p class="signature">
+            Affettiğin için teşekkür ederim sevgilim.<br>
+            <strong>İyi ki varsın, hep kalbimdesin. 🌹</strong>
+          </p>
+        </div>
+        <div class="music-note-banner">
+          <span>🎵 Şarkımız çalıyor: Media Naranja - Fey 🎵</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
