@@ -59,25 +59,39 @@ let atmosphere = 'autumn';
 
 // Particle Arrays
 const rainDrops = [];
+const glassDroplets = []; // Realistic sliding condensation on glass
 const leaves = [];
 const fireflies = [];
 const hearts = [];
+const rosePetals = []; // Swaying rose petals for the climax
 const fireworks = [];
 
-// Initialize Rain (180 drops)
-for (let i = 0; i < 180; i++) {
+// Initialize Falling Rain (200 drops)
+for (let i = 0; i < 200; i++) {
   rainDrops.push({
     x: Math.random() * width,
     y: Math.random() * height,
-    len: Math.random() * 22 + 10,
-    speed: Math.random() * 7 + 10,
+    len: Math.random() * 24 + 12,
+    speed: Math.random() * 8 + 12,
     opacity: Math.random() * 0.4 + 0.2
   });
 }
 
-// Initialize Autumn Leaves (35 leaves)
+// Initialize Glass Sliding Droplets (25 window beads)
+for (let i = 0; i < 25; i++) {
+  glassDroplets.push({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    r: Math.random() * 3 + 2,
+    trail: Math.random() * 25 + 10,
+    speed: Math.random() * 0.8 + 0.2,
+    opacity: Math.random() * 0.4 + 0.3
+  });
+}
+
+// Initialize Autumn Leaves (38 leaves)
 const leafColors = ['#e67e22', '#d35400', '#f39c12', '#c0392b', '#b9770e'];
-for (let i = 0; i < 35; i++) {
+for (let i = 0; i < 38; i++) {
   leaves.push({
     x: Math.random() * width,
     y: Math.random() * height,
@@ -90,12 +104,12 @@ for (let i = 0; i < 35; i++) {
   });
 }
 
-// Initialize Twilight Fireflies (60 fireflies)
-for (let i = 0; i < 60; i++) {
+// Initialize Twilight Fireflies (65 fireflies)
+for (let i = 0; i < 65; i++) {
   fireflies.push({
     x: Math.random() * width,
     y: Math.random() * height,
-    size: Math.random() * 3 + 1.5,
+    size: Math.random() * 3.5 + 1.5,
     opacity: Math.random(),
     pulseSpeed: Math.random() * 0.03 + 0.01,
     vx: (Math.random() - 0.5) * 0.8,
@@ -103,8 +117,23 @@ for (let i = 0; i < 60; i++) {
   });
 }
 
+// Initialize Rose Petals (30 petals for climax)
+const petalColors = ['#f43f5e', '#e11d48', '#be123c', '#fda4af', '#fb7185'];
+for (let i = 0; i < 30; i++) {
+  rosePetals.push({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    size: Math.random() * 12 + 8,
+    color: petalColors[Math.floor(Math.random() * petalColors.length)],
+    speedY: Math.random() * 1.4 + 0.8,
+    speedX: Math.random() * 1.2 - 0.6,
+    angle: Math.random() * Math.PI * 2,
+    spin: (Math.random() - 0.5) * 0.03
+  });
+}
+
 // Mouse Position Tracking & Interactive Ripples
-const mouse = { x: -100, y: -100, prevX: -100, prevY: -100 };
+const mouse = { x: -100, y: -100 };
 window.addEventListener('mousemove', (e) => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
@@ -128,7 +157,7 @@ function spawnHeart(x, y, fromMouse = false) {
   hearts.push({
     x: x || Math.random() * width,
     y: y || (fromMouse ? mouse.y : height + 20),
-    size: Math.random() * 22 + 14,
+    size: Math.random() * 24 + 14,
     speedY: fromMouse ? (Math.random() * -2 - 1) : (Math.random() * -3 - 2),
     speedX: (Math.random() - 0.5) * 2,
     color: ['#ff4d6d', '#ff758f', '#ffb3c1', '#f4c068', '#ff2a5f'][Math.floor(Math.random() * 5)],
@@ -139,8 +168,8 @@ function spawnHeart(x, y, fromMouse = false) {
 
 // Helper: Firework Particle Burst
 function triggerFireworks(x, y) {
-  const count = 45;
-  const colors = ['#f4c068', '#ff4d6d', '#10b981', '#38bdf8', '#fbbf24', '#ffffff'];
+  const count = 50;
+  const colors = ['#fbbf24', '#f43f5e', '#10b981', '#38bdf8', '#f59e0b', '#ffffff'];
   for (let i = 0; i < count; i++) {
     const angle = Math.random() * Math.PI * 2;
     const speed = Math.random() * 7 + 2;
@@ -174,9 +203,35 @@ function spawnFloatingEmoji(emoji, x, y) {
 function animateCanvas() {
   ctx.clearRect(0, 0, width, height);
 
-  // 1. Draw Rain (Active during 'autumn' and 'tears')
+  // 1. Draw Rain & Glass Droplets (Active during 'autumn' and 'tears')
   if (atmosphere === 'autumn' || atmosphere === 'tears') {
-    ctx.lineWidth = 1.2;
+    // Glass Sliding Droplets
+    for (const bead of glassDroplets) {
+      ctx.beginPath();
+      ctx.arc(bead.x, bead.y, bead.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(186, 230, 253, ${bead.opacity})`;
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = 'rgba(186, 230, 253, 0.5)';
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Small wet trail
+      ctx.beginPath();
+      ctx.moveTo(bead.x, bead.y - bead.trail);
+      ctx.lineTo(bead.x, bead.y);
+      ctx.strokeStyle = `rgba(186, 230, 253, ${bead.opacity * 0.4})`;
+      ctx.lineWidth = bead.r * 0.7;
+      ctx.stroke();
+
+      bead.y += bead.speed;
+      if (bead.y > height + 30) {
+        bead.y = -20;
+        bead.x = Math.random() * width;
+      }
+    }
+
+    // Streaking Rain
+    ctx.lineWidth = 1.3;
     ctx.strokeStyle = atmosphere === 'tears' ? 'rgba(147, 197, 253, 0.45)' : 'rgba(203, 213, 225, 0.35)';
 
     for (const drop of rainDrops) {
@@ -201,7 +256,7 @@ function animateCanvas() {
       }
     }
 
-    // Draw Autumn Leaves
+    // Autumn Leaves
     for (const leaf of leaves) {
       ctx.save();
       ctx.translate(leaf.x, leaf.y);
@@ -240,20 +295,45 @@ function animateCanvas() {
 
       ctx.beginPath();
       ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(244, 192, 104, ${f.opacity})`;
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = '#f4c068';
+      ctx.fillStyle = `rgba(251, 191, 36, ${f.opacity})`;
+      ctx.shadowBlur = 14;
+      ctx.shadowColor = '#fbbf24';
       ctx.fill();
       ctx.shadowBlur = 0;
     }
   }
 
-  // 3. Draw Floating Hearts (Active during 'climax')
+  // 3. Draw Floating Hearts, Rose Petals & Fireworks (Active during 'climax')
   if (atmosphere === 'climax') {
-    if (Math.random() < 0.18) {
+    if (Math.random() < 0.2) {
       spawnHeart();
     }
 
+    // Draw Rose Petals
+    for (const petal of rosePetals) {
+      ctx.save();
+      ctx.translate(petal.x, petal.y);
+      ctx.rotate(petal.angle);
+      ctx.fillStyle = petal.color;
+      ctx.globalAlpha = 0.85;
+
+      ctx.beginPath();
+      ctx.arc(0, 0, petal.size, 0, Math.PI);
+      ctx.bezierCurveTo(petal.size * 0.5, petal.size * 1.5, -petal.size * 0.5, petal.size * 1.5, 0, 0);
+      ctx.fill();
+      ctx.restore();
+
+      petal.y += petal.speedY;
+      petal.x += petal.speedX + Math.sin(petal.angle) * 0.6;
+      petal.angle += petal.spin;
+
+      if (petal.y > height + 20) {
+        petal.y = -20;
+        petal.x = Math.random() * width;
+      }
+    }
+
+    // Draw Hearts
     for (let i = hearts.length - 1; i >= 0; i--) {
       const h = hearts[i];
       h.y += h.speedY;
@@ -279,7 +359,7 @@ function animateCanvas() {
       const p = fireworks[i];
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.08; // gravity
+      p.vy += 0.08;
       p.alpha -= p.decay;
 
       ctx.save();
@@ -310,6 +390,7 @@ const introModal = document.getElementById('intro-modal');
 const mainContainer = document.getElementById('main-container');
 const audioHud = document.getElementById('audio-hud');
 const trackNameLabel = document.getElementById('current-track-name');
+const celestialMoon = document.getElementById('celestial-moon');
 const vignette = document.getElementById('vignette-overlay');
 
 const stage1 = document.getElementById('stage-1');
@@ -376,6 +457,10 @@ quote2.addEventListener('click', (e) => {
   atmosphere = 'twilight';
   vignette.style.background = 'radial-gradient(circle at center, rgba(76, 29, 149, 0.2) 30%, rgba(15, 7, 36, 0.85) 100%)';
 
+  // Reveal glowing celestial moon
+  celestialMoon.classList.remove('hidden');
+  setTimeout(() => celestialMoon.classList.add('active'), 50);
+
   // Crossfade to HIM - Heaven Tonight AT CHORUS 39.0s
   trackNameLabel.textContent = 'HIM - Heaven Tonight (You Are My Heaven)';
   playSong(audioHeaven, 39.0);
@@ -415,7 +500,7 @@ function dodgeOrMorphNoButton() {
     btnNo.classList.remove('no-btn');
     btnNo.classList.add('yes-btn', 'morphed-yes');
 
-    // Trigger sweet heart burst
+    // Sweet heart burst
     const rect = btnNo.getBoundingClientRect();
     for (let i = 0; i < 6; i++) {
       spawnFloatingEmoji('💖', rect.left + rect.width / 2, rect.top);
@@ -444,28 +529,43 @@ function handleYesVictory(e) {
   playSong(audioMedia, 38.0);
 
   // Explosive Fireworks Celebration
-  const clientX = e?.clientX || window.innerWidth / 2;
-  const clientY = e?.clientY || window.innerHeight / 2;
-
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 7; i++) {
     setTimeout(() => {
       triggerFireworks(
         Math.random() * (width * 0.8) + width * 0.1,
         Math.random() * (height * 0.5) + height * 0.1
       );
-    }, i * 250);
+    }, i * 240);
   }
 
   // Continuous floating emojis
   const loveEmojis = ['❤️', '💖', '✨', '🌹', '🥰', '🎉'];
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 18; i++) {
     setTimeout(() => {
       const em = loveEmojis[Math.floor(Math.random() * loveEmojis.length)];
       spawnFloatingEmoji(em, Math.random() * width, height - 80);
-    }, i * 120);
+    }, i * 110);
   }
 
   setStage(stage3, stage4);
 }
 
 btnYes.addEventListener('click', handleYesVictory);
+
+// ==========================================
+// SECRET ENVELOPE (EASTER EGG NOTE)
+// ==========================================
+const envelopeTrigger = document.getElementById('envelope-trigger');
+const envelopeIcon = document.getElementById('envelope-icon');
+const secretNoteContent = document.getElementById('secret-note-content');
+
+if (envelopeTrigger) {
+  envelopeTrigger.addEventListener('click', (e) => {
+    envelopeIcon.classList.add('hidden');
+    secretNoteContent.classList.remove('hidden');
+
+    for (let i = 0; i < 6; i++) {
+      spawnFloatingEmoji('💌', e.clientX + (i - 2.5) * 35, e.clientY - 20);
+    }
+  });
+}

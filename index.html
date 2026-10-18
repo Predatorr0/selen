@@ -7,22 +7,35 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍂</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Fullscreen Canvas for Atmospheric Rain, Leaves, Hearts & Fireflies -->
+  <!-- Fullscreen Canvas for Atmospheric Rain, Window Droplets, Leaves, Hearts & Petals -->
   <canvas id="bg-canvas"></canvas>
+  
+  <!-- Celestial Glowing Moon for Twilight/Climax -->
+  <div id="celestial-moon" class="hidden">
+    <div class="moon-body"></div>
+    <div class="moon-halo"></div>
+  </div>
+
   <div id="vignette-overlay"></div>
 
   <!-- Music Status Mini HUD -->
   <div id="audio-hud" class="hidden">
-    <div class="audio-disc">🎵</div>
-    <span id="current-track-name">Travis - Happy To Hang Around</span>
+    <div class="vinyl-disc">
+      <div class="vinyl-groove"></div>
+      <div class="vinyl-center"></div>
+    </div>
+    <div class="audio-hud-text">
+      <span class="hud-now-playing">ŞU AN ÇALIYOR</span>
+      <span id="current-track-name">Travis - Happy To Hang Around</span>
+    </div>
   </div>
 
-  <!-- Stage 0: Initial Romantic Invitation (Required for Auto-Play Policy) -->
+  <!-- Stage 0: Initial Romantic Invitation (Autoplay Policy Safe) -->
   <div id="intro-modal" class="screen-stage active">
     <div class="glass-card romantic-card">
       <div class="heart-pulse-icon">🍂</div>
@@ -44,7 +57,7 @@
     <div id="stage-1" class="stage-view active">
       <div class="content-box">
         <span class="whisper-tag">Seni dinlemek istiyorum...</span>
-        <h1 class="hero-quote clickable-quote" id="quote-1">
+        <h1 class="hero-quote clickable-quote shimmer-gold" id="quote-1">
           Seni kırdığımı biliyorum
         </h1>
         <div class="interactive-hint">
@@ -76,7 +89,7 @@
     <div id="stage-3" class="stage-view">
       <div class="content-box">
         <span class="whisper-tag glow-tag">Bütün kalbim seninle...</span>
-        <h1 class="hero-quote romantic-glow" id="quote-3">
+        <h1 class="hero-quote romantic-glow shimmer-gold" id="quote-3">
           Seni çok seviyorum Selen 🕊️✨
         </h1>
         <p class="sub-letter romantic-letter">
@@ -102,7 +115,7 @@
     <div id="stage-4" class="stage-view">
       <div class="content-box climax-box">
         <div class="climax-stars">✨ 💖 ✨</div>
-        <h1 class="climax-main-title">
+        <h1 class="climax-main-title shimmer-gold">
           Seni her halinle seviyorum Selen ❤️
         </h1>
         <div class="love-letter-parchment">
@@ -111,10 +124,23 @@
             Ben senin kalbini kırmak için değil, ömrüm yettikçe o kalbi pamuklara sarmak için varım.
           </p>
           <p class="signature">
-            Affettiğin için teşekkür ederim sevgilim.<br>
+            Affettiğin için teşekkür ederim Selen.<br>
             <strong>İyi ki varsın, hep kalbimdesin. 🌹</strong>
           </p>
         </div>
+
+        <!-- Secret Interactive Envelope (Easter Egg) -->
+        <div class="secret-envelope-wrapper" id="envelope-trigger">
+          <div class="envelope-closed" id="envelope-icon">
+            <span class="envelope-badge">💌 Sana bir küçük notum daha var (Açmak için dokun)</span>
+          </div>
+          <div class="secret-letter hidden" id="secret-note-content">
+            <p>
+              "Ne olursa olsun, günün sonunda kalbimin döndüğü ve huzur bulduğu tek yer yine senin yanın." 🕊️
+            </p>
+          </div>
+        </div>
+
         <div class="music-note-banner">
           <span>🎵 Şarkımız çalıyor: Media Naranja - Fey 🎵</span>
         </div>

@@ -1,13 +1,14 @@
 :root {
-  --bg-dark: #0a0e17;
-  --text-main: #f5f7fc;
-  --text-dim: #a4b3cb;
-  --gold: #f4c068;
-  --rose: #ff4d6d;
-  --crimson: #ff2a5f;
-  --autumn-amber: #e67e22;
+  --bg-dark: #070a12;
+  --text-main: #f8fafc;
+  --text-dim: #94a3b8;
+  --gold: #f59e0b;
+  --gold-glow: #fbbf24;
+  --rose: #f43f5e;
+  --crimson: #e11d48;
+  --autumn-amber: #d97706;
   --font-serif: 'Playfair Display', Georgia, serif;
-  --font-script: 'Dancing Script', cursive;
+  --font-script: 'Alex Brush', cursive;
   --font-sans: 'Inter', -apple-system, sans-serif;
 }
 
@@ -40,20 +41,63 @@ html, body {
   pointer-events: none;
 }
 
-/* Vignette Cinematic Darkness */
+/* Celestial Moon */
+#celestial-moon {
+  position: fixed;
+  top: 8%;
+  right: 12%;
+  width: 90px;
+  height: 90px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2s ease, transform 2s ease;
+  transform: translateY(20px);
+}
+
+#celestial-moon.active {
+  opacity: 0.85;
+  transform: translateY(0);
+}
+
+.moon-body {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fffbeb 20%, #fef3c7 70%, #fde68a 100%);
+  box-shadow: 0 0 35px rgba(254, 240, 138, 0.45);
+}
+
+.moon-halo {
+  position: absolute;
+  top: -25px;
+  left: -25px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(254, 243, 199, 0.15) 0%, transparent 70%);
+  animation: haloPulse 4s infinite ease-in-out;
+}
+
+@keyframes haloPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 0.9; }
+}
+
+/* Vignette Darkness */
 #vignette-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
-  background: radial-gradient(circle at center, transparent 40%, rgba(5, 7, 12, 0.75) 100%);
+  background: radial-gradient(circle at center, transparent 35%, rgba(3, 5, 10, 0.8) 100%);
   transition: background 2s ease;
 }
 
-/* Floating Audio Disc Indicator */
+/* Vinyl Record HUD Player */
 #audio-hud {
   position: fixed;
   top: 20px;
@@ -61,24 +105,78 @@ html, body {
   z-index: 50;
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 8px 16px;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 8px 18px 8px 12px;
   border-radius: 99px;
-  font-size: 0.8rem;
-  color: var(--gold);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
   animation: fadeIn 1s ease forwards;
 }
 
-.audio-disc {
-  animation: spin 4s linear infinite;
+.vinyl-disc {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #111827;
+  border: 2px solid #374151;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: spinRecord 3.5s linear infinite;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
-@keyframes spin {
+.vinyl-groove {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px dashed #4b5563;
+}
+
+.vinyl-center {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rose);
+}
+
+@keyframes spinRecord {
   100% { transform: rotate(360deg); }
+}
+
+.audio-hud-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.hud-now-playing {
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+#current-track-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gold-glow);
+}
+
+/* Liquid Golden Shimmer on Text */
+.shimmer-gold {
+  background: linear-gradient(90deg, #ffffff 0%, var(--gold-glow) 50%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: liquidShimmer 4s linear infinite;
+}
+
+@keyframes liquidShimmer {
+  to { background-position: 200% center; }
 }
 
 /* Container & Stages */
@@ -102,8 +200,8 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(8, 11, 18, 0.94);
-  backdrop-filter: blur(16px);
+  background: rgba(5, 8, 15, 0.95);
+  backdrop-filter: blur(18px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.8s ease, transform 0.8s ease;
@@ -114,11 +212,10 @@ html, body {
   pointer-events: auto;
 }
 
-/* Stage Views */
 .stage-view {
   position: absolute;
   width: 90%;
-  max-width: 720px;
+  max-width: 740px;
   text-align: center;
   opacity: 0;
   transform: translateY(24px) scale(0.97);
@@ -142,15 +239,15 @@ html, body {
 /* Typography */
 .whisper-tag {
   font-family: var(--font-script);
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   color: var(--autumn-amber);
   letter-spacing: 0.05em;
   opacity: 0.9;
 }
 
 .whisper-tag.glow-tag {
-  color: var(--gold);
-  text-shadow: 0 0 12px rgba(244, 192, 104, 0.6);
+  color: var(--gold-glow);
+  text-shadow: 0 0 16px rgba(251, 191, 36, 0.6);
 }
 
 .hero-quote {
@@ -174,8 +271,7 @@ html, body {
 
 .clickable-quote:hover {
   transform: scale(1.03);
-  text-shadow: 0 0 35px rgba(244, 192, 104, 0.8);
-  color: var(--gold);
+  text-shadow: 0 0 40px rgba(251, 191, 36, 0.85);
 }
 
 .hero-quote.sad-mode {
@@ -185,14 +281,11 @@ html, body {
 
 .hero-quote.sad-mode:hover {
   color: #ffffff;
-  text-shadow: 0 0 35px rgba(255, 77, 109, 0.8);
+  text-shadow: 0 0 35px rgba(244, 63, 94, 0.85);
 }
 
 .hero-quote.romantic-glow {
-  background: linear-gradient(135deg, #ffffff 40%, var(--gold) 75%, var(--rose) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 40px rgba(255, 77, 109, 0.5);
+  text-shadow: 0 0 45px rgba(244, 63, 94, 0.6);
 }
 
 .sub-letter {
@@ -215,7 +308,6 @@ html, body {
   gap: 6px;
   margin-top: 10px;
   font-size: 0.85rem;
-  font-family: var(--font-sans);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--autumn-amber);
@@ -229,15 +321,15 @@ html, body {
 
 /* Glass Card */
 .glass-card {
-  background: rgba(17, 24, 39, 0.75);
+  background: rgba(17, 24, 39, 0.78);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 24px;
   padding: 44px 36px;
   text-align: center;
   max-width: 440px;
   width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
 }
 
 .heart-pulse-icon {
@@ -248,14 +340,14 @@ html, body {
 
 @keyframes heartPulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); filter: drop-shadow(0 0 15px var(--gold)); }
+  50% { transform: scale(1.15); filter: drop-shadow(0 0 18px var(--gold-glow)); }
 }
 
 .intro-title {
   font-family: var(--font-serif);
   font-size: 2.2rem;
   margin-bottom: 12px;
-  color: var(--gold);
+  color: var(--gold-glow);
 }
 
 .intro-desc {
@@ -276,13 +368,13 @@ html, body {
   border: none;
   border-radius: 99px;
   cursor: pointer;
-  box-shadow: 0 8px 30px rgba(230, 126, 34, 0.4);
+  box-shadow: 0 8px 30px rgba(217, 119, 6, 0.4);
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .btn-romantic:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 12px 40px rgba(255, 77, 109, 0.6);
+  box-shadow: 0 12px 40px rgba(244, 63, 94, 0.6);
 }
 
 /* Question Section */
@@ -343,14 +435,14 @@ html, body {
   background: linear-gradient(135deg, var(--rose), var(--crimson)) !important;
   color: #ffffff !important;
   border: none !important;
-  box-shadow: 0 8px 30px rgba(255, 42, 95, 0.6) !important;
+  box-shadow: 0 8px 30px rgba(225, 29, 72, 0.6) !important;
   transform: scale(1.1) !important;
   animation: pulseGlow 1.5s infinite alternate !important;
 }
 
 @keyframes pulseGlow {
-  0% { box-shadow: 0 0 20px rgba(255, 42, 95, 0.5); }
-  100% { box-shadow: 0 0 45px rgba(255, 42, 95, 0.9); }
+  0% { box-shadow: 0 0 20px rgba(225, 29, 72, 0.5); }
+  100% { box-shadow: 0 0 45px rgba(225, 29, 72, 0.9); }
 }
 
 /* Climax Stage */
@@ -372,10 +464,7 @@ html, body {
   font-size: clamp(2.6rem, 6.5vw, 4.8rem);
   font-weight: 900;
   line-height: 1.15;
-  background: linear-gradient(135deg, #ffffff 30%, var(--gold) 70%, var(--rose) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 35px rgba(255, 77, 109, 0.6));
+  filter: drop-shadow(0 0 35px rgba(244, 63, 94, 0.6));
   animation: pulseClimax 3s infinite ease-in-out;
 }
 
@@ -386,14 +475,14 @@ html, body {
 
 .love-letter-parchment {
   margin-top: 24px;
-  background: rgba(18, 24, 38, 0.7);
+  background: rgba(18, 24, 38, 0.75);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(244, 192, 104, 0.3);
+  border: 1px solid rgba(245, 158, 11, 0.35);
   border-radius: 20px;
   padding: 32px 36px;
-  font-family: var(--font-script);
-  font-size: clamp(1.4rem, 3.5vw, 1.9rem);
-  line-height: 1.7;
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 2.8vw, 1.4rem);
+  line-height: 1.8;
   color: #fff1f2;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
@@ -403,15 +492,55 @@ html, body {
 }
 
 .signature {
-  color: var(--gold);
+  font-family: var(--font-script);
+  font-size: 1.8rem;
+  color: var(--gold-glow);
   margin-top: 18px;
 }
 
-.music-note-banner {
-  margin-top: 24px;
-  font-family: var(--font-sans);
+/* Secret Envelope Easter Egg */
+.secret-envelope-wrapper {
+  margin-top: 22px;
+  cursor: pointer;
+}
+
+.envelope-closed {
+  display: inline-block;
+  padding: 10px 22px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px dashed var(--gold-glow);
+  border-radius: 99px;
+  transition: all 0.3s ease;
+}
+
+.envelope-closed:hover {
+  background: rgba(245, 158, 11, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+.envelope-badge {
   font-size: 0.9rem;
-  color: var(--gold);
+  color: var(--gold-glow);
+  font-weight: 600;
+}
+
+.secret-letter {
+  margin-top: 14px;
+  padding: 16px 24px;
+  border-radius: 14px;
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.35);
+  font-family: var(--font-script);
+  font-size: 1.5rem;
+  color: #ffe4e6;
+  animation: fadeIn 0.6s ease;
+}
+
+.music-note-banner {
+  margin-top: 22px;
+  font-size: 0.85rem;
+  color: var(--gold-glow);
   letter-spacing: 0.1em;
   opacity: 0.85;
 }
@@ -445,4 +574,5 @@ html, body {
   .love-letter-parchment { padding: 24px 20px; }
   .btn-group { flex-direction: column; width: 100%; }
   .choice-btn { width: 100%; }
+  #celestial-moon { width: 65px; height: 65px; top: 5%; right: 6%; }
 }
